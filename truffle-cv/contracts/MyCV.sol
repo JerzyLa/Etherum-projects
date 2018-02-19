@@ -22,20 +22,23 @@ contract MyCV is CVExtender, Mortal {
 
    struct SocialMedia {
       string addressUrl;
-      string githubUrl;
       string linkedInUrl;
    }
+
+   enum SkillLevel {BASIC, MEDIUM, GOOD, VERY_GOOD, EXPERT};
 
    string m_title;
    string m_description;
    PersonalInfo m_personalInfo;
    SocialMedia m_socialMedia;
+   mapping(string => string) m_projects;
+   mapping(string => SkillLevel) m_skills;
 
    function MyCV() public {
       m_title = "Jerzy Lasyk CV";
       m_description = "I am software developer with over 4 years of professional experience passionate about blockchain development.";
       m_personalInfo = PersonalInfo("Jerzy Lasyk", "jerzylasyk@gmail.com");
-      m_socialMedia = SocialMedia("https://github.com/JerzyLa", "", "");
+      m_socialMedia = SocialMedia("https://github.com/JerzyLa", "https://www.linkedin.com/in/jerzylasyk/");
    }
 
    function getAddress() public view returns(string) {
