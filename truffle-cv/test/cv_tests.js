@@ -7,6 +7,8 @@ contract("MyCv", (accounts) => {
       let expectedTitle = "Jerzy Lasyk CV";
       let expectedName = "Jerzy Lasyk";
       let expectedEmail = "jerzylasyk@gmail.com";
+      let expectedProjectName = "SDARS";
+      let expectedSkillName = "English";
       let contractInstance;
 
       return mycv.deployed().then((instance) => {
@@ -24,6 +26,12 @@ contract("MyCv", (accounts) => {
       }).then((author) => {
          assert.equal(author[0], expectedName);
          assert.equal(author[1], expectedEmail);
+         return contractInstance.getProject(0, {from:accounts[1]});
+      }).then((project) => {
+         assert.equal(project[0], expectedProjectName);
+         return contractInstance.getSkill(0, {form:accounts[2]});
+      }). then((skill) => {
+         assert.equal(skill[0], expectedSkillName);
       });
    });
 
@@ -51,6 +59,44 @@ contract("MyCv", (accounts) => {
          return contractInstance.getAddress();
       }).then((address) => {
          assert.equal(address, "my new http address");
+      });
+   });
+
+   it("Should be possible to add and remove projects as an author", () => {
+      let contractInstance;
+
+      return mycv.deployed().then((instance) => {
+         contractInstance = instance;
+         return contractInstance.addProject("Project1", "Superb project");
+      }).then((result) => {
+         return contractInstance.getProjectsCount();
+      }).then((count) => {
+         assert.equal(count, 2);
+      }).then(() => {
+         return contractInstance.removeProject(1);
+      }).then((result) => {
+         return contractInstance.getProjectsCount();
+      }).then((count) => {
+         assert.equal(count, 1);
+      });
+   });
+
+   it("Should be possible to add and remove skills as an author", () => {
+      let contractInstance;
+
+      return mycv.deployed().then((instance) => {
+         contractInstance = instance;
+         return contractInstance.addSkill("Skill1", 3);
+      }).then((result) => {
+         return contractInstance.getSkillsCount();
+      }).then((count) => {
+         assert.equal(count, 2);
+      }).then(() => {
+         return contractInstance.removeSkill(1);
+      }).then((result) => {
+         return contractInstance.getSkillsCount();
+      }).then((count) => {
+         assert.equal(count, 1);
       });
    });
 });
