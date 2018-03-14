@@ -1,0 +1,82 @@
+h1 {
+  margin: 0 !important;
+}
+
+a {
+  color: inherit;
+}
+
+.left-column {
+  padding: 0 !important;
+  color: white;
+  background-color: #002e58;
+}
+
+.wrapper {
+  padding: 50px 20px 0px 20px;
+}
+
+.title {
+  font-size: 2em;
+  font-weight: bold;
+  margin-bottom: 0.7em;
+}
+
+.address-url {
+  margin-bottom: 1.5em;
+}
+
+.personal-info {
+  margin-bottom: 1.5em;
+}
+
+.skill-list {
+  padding: 0px 20px 50px 20px;
+}
+
+.skill {
+  margin-bottom: 1em;
+}
+
+.skills-heading {
+  padding: 5px 20px 5px 20px;
+  background-color: #001f3b;
+  font-weight: bold;
+  font-size: 1.5em;
+  margin-bottom: 1em;
+}
+
+.progress {
+  margin: 6px 0px 0px 0px;
+  background-color: #001f3b;
+  height: 15px !important;
+}
+
+.progress-bar { 
+  background-color: white;
+}
+
+.description {
+ margin-bottom: 0.7em; 
+}
+
+.project_name {
+  font-weight: bold;
+  color: #002e58;
+}
+
+.projects-heading {
+  padding: 5px 0px 5px 0px;
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #002e58;
+
+  border-bottom: 2px solid;
+  border-top: 2px solid;
+  border-color: rgb(230, 230, 230);
+  margin-bottom: 0.7em;
+}
+
+.project {
+  margin-bottom: 1em;
+}
