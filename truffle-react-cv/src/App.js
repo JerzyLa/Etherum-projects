@@ -15,6 +15,12 @@ export default class App extends React.Component {
 
     this.state = {
       cvdata: this.props.cvdata
+      // title: null,
+      // description: null,
+      // addressUrl: null,
+      // personalInfo: null,
+      // projects: null,
+      // skills: null
     };
 
     this.web3 = null;
@@ -30,6 +36,7 @@ export default class App extends React.Component {
       this.web3 = results.web3;
       this.myCvContract.setProvider(this.web3.currentProvider);
       this.getAccounts();
+      this.updateCvforContract();
     })
     .catch(() => {
       console.log('Error finding web3.')
@@ -54,6 +61,58 @@ export default class App extends React.Component {
     })
   }
 
+  updateCvforContract()
+  {
+    let contract;
+    let data = this.state.cvdata;
+    this.myCvContract.deployed().then((instance) => {
+      contract = instance;
+      return contract.getAddress({from: this.accounts[0]});
+    }).then((address) => {
+      data.addressUrl = address;
+      return contract.getTitle();
+    }).then((title) => {
+      data.title = title;
+      return contract.getDescription();
+    }).then((description) => {
+      data.description = description;
+      return contract.getAuthor();
+    }).then((author) => {
+      data.personalInfo.name = author[0];
+      data.personalInfo.info = author[1];
+      return contract.getSkillsCount();
+    }).then((count) => {
+      for(let i=0; i<count; ++i) {
+       this.getSkillForContract(contract, i)
+       .then((skill) => {
+          data.skills.add({name: skill[0], level: skill[1]});
+       })
+      }
+      return contract.getProjectsCount();
+    }).then((count) => {
+      for(let i=0; i<count; ++i) {
+        this.getProjectForContract(contract, i)
+        .then((project) => {
+           data.project.add({name: project[0], description: project[1]});
+        })
+       }
+    }).then(() => {
+      this.setState({cvdata : data});
+    });
+  }
+
+  getSkillForContract(contract, num) {
+    return new Promise(() => {
+      return contract.getSkill(num);
+    })
+  }
+
+  getProjectForContract(contract, num) {
+    return new Promise(() => {
+      return contract.getProject(num);
+    })
+  }
+
   render() {
     let data = this.state.cvdata;
 
@@ -63,7 +122,7 @@ export default class App extends React.Component {
           <div className="col-md-4 left-column">
             <div className="wrapper">
               <Title title={data.title} />
-              <PersonalInfo name={data.personalInfo.name}
+              <PersonalInfo name="E-mail"
                 info={data.personalInfo.info}/>
               <AddressUrl name="LinkedIn" url={data.addressUrl} />
             </div>

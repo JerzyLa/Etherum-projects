@@ -38,7 +38,7 @@ contract MyCV is CVExtender, Mortal {
    function MyCV() public {
       m_title = "Jerzy Lasyk CV";
       m_description = "I am software developer with over 4 years of professional experience passionate about blockchain development.";
-      m_personalInfo = PersonalInfo("Jerzy Lasyk", "xyz@gmail.com");
+      m_personalInfo = PersonalInfo("Jerzy Lasyk", "jerzy.lasyk@gmail.com");
       m_addressUrl = "https://github.com/JerzyLa";
       m_projects.push(Project("SDARS", "Satellite radio application for automotive companies"));
       m_skills.push(Skill("English", SkillLevel.VERY_GOOD));
