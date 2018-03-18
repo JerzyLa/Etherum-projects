@@ -2,10 +2,10 @@ import React from "react";
 
 export default class SkillsList extends React.Component {
   renderSkills() {
-    return this.props.skills.map((skill,i) => {
+    return this.props.skills.map(skill => {
       let barwidth = skill.level * 100 / 5 + "%";
       return (
-        <div className="skill" key={i}>
+        <div className="skill">
           <strong>{skill.name}</strong>
           <div className="progress">
             <div

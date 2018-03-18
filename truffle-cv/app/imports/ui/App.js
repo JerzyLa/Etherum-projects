@@ -3,19 +3,15 @@ import { default as contract } from "truffle-contract";
 import MyCvContractArtifacts from '../build/contracts/MyCV.json'
 import getWeb3 from './utils/getWeb3'
 
-import Title from "./imports/ui/Title";
-import PersonalInfo from "./imports/ui/PersonalInfo";
-import AddressUrl from "./imports/ui/AddressUrl";
-import SkillsList from "./imports/ui/SkillsList";
-import ProjectsList from "./imports/ui/ProjectsList";
+import Title from "./Title";
+import PersonalInfo from "./PersonalInfo";
+import AddressUrl from "./AddressUrl";
+import SkillsList from "./ui/SkillsList";
+import ProjectsList from "./ProjectsList";
 
 export default class App extends React.Component {
   constructor(props) {
     super(props)
-
-    this.state = {
-      cvdata: this.props.cvdata
-    };
 
     this.web3 = null;
     this.accounts = null;
@@ -26,10 +22,12 @@ export default class App extends React.Component {
     // Get network provider and web3 instance.
     // See utils/getWeb3 for more info.
 
-    getWeb3.then(results => {
-      this.web3 = results.web3;
-      this.myCvContract.setProvider(this.web3.currentProvider);
-      this.getAccounts();
+    getWeb3
+    .then(results => {
+      this.web3 = results.web3
+      this.myCvContract.setProvider(this.web3.currentProvider)
+      
+      this.getAccounts()
     })
     .catch(() => {
       console.log('Error finding web3.')
@@ -55,7 +53,7 @@ export default class App extends React.Component {
   }
 
   render() {
-    let data = this.state.cvdata;
+    let data = this.props.cvdata;
 
     return (
       <div className="container">

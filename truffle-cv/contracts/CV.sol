@@ -3,13 +3,6 @@ pragma solidity ^0.4.18;
 import "./Mortal.sol";
 import "./CVExtender.sol";
 
-// TODO: zrobić własny frontend do tego CV
-// TODO: update, żeby wyglądało prawie jak CV z strony interviewme
-// TODO: frontend ma sie updatowac z kazda zmiana
-// TODO: serialized arrays
-// TODO: przetestuj na testowym blockchainie
-// TODO: submit do nich
-
 contract MyCV is CVExtender, Mortal {
    event AddressChanged(address from, string oldAddress, string newAddress);
    event DescriptionChanged(address from, string oldDescription, string newDescription);
@@ -45,9 +38,9 @@ contract MyCV is CVExtender, Mortal {
    function MyCV() public {
       m_title = "Jerzy Lasyk CV";
       m_description = "I am software developer with over 4 years of professional experience passionate about blockchain development.";
-      m_personalInfo = PersonalInfo("Jerzy Lasyk", "jerzylasyk@gmail.com");
+      m_personalInfo = PersonalInfo("Jerzy Lasyk", "xyz@gmail.com");
       m_addressUrl = "https://github.com/JerzyLa";
-      m_projects.push(Project("SDARS", "Satellite radio application for automotive companies like Volvo, Volkswagen"));
+      m_projects.push(Project("SDARS", "Satellite radio application for automotive companies"));
       m_skills.push(Skill("English", SkillLevel.VERY_GOOD));
    }
 

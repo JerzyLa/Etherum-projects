@@ -26,6 +26,13 @@ module.exports = {
         test: /\.(ttf|eot|svg)(\?[\s\S]+)?$/,
         use: 'file-loader',
       },
+      {
+        test:/\.js$/,
+        loader: "babel-loader",
+        options: {
+          presets: ['react', 'es2015']
+        }    
+      }
     ],
     loaders: [
       { test: /\.json$/, use: 'json-loader' },

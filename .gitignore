@@ -2,3 +2,5 @@ truffle-mywallet/node_modules/
 PrivateNetwork/
 truffle-cv/node_modules/
 truffle-firstapp/node_modules/
+truffle-react-cv/node_modules/
+workspace.code-workspace
