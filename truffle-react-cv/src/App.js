@@ -15,12 +15,6 @@ export default class App extends React.Component {
 
     this.state = {
       cvdata: this.props.cvdata
-      // title: null,
-      // description: null,
-      // addressUrl: null,
-      // personalInfo: null,
-      // projects: null,
-      // skills: null
     };
 
     this.web3 = null;
@@ -36,7 +30,7 @@ export default class App extends React.Component {
       this.web3 = results.web3;
       this.myCvContract.setProvider(this.web3.currentProvider);
       this.getAccounts();
-      this.updateCvforContract();
+      this.updateCvForContract();
     })
     .catch(() => {
       console.log('Error finding web3.')
@@ -61,57 +55,57 @@ export default class App extends React.Component {
     })
   }
 
-  updateCvforContract()
+  updateCvForContract()
   {
     let contract;
     let data = this.state.cvdata;
     this.myCvContract.deployed().then((instance) => {
       contract = instance;
       return contract.getAddress({from: this.accounts[0]});
-    }).then((address) => {
+    })
+    .then((address) => {
       data.addressUrl = address;
       return contract.getTitle();
-    }).then((title) => {
+    })
+    .then((title) => {
       data.title = title;
       return contract.getDescription();
-    }).then((description) => {
+    })
+    .then((description) => {
       data.description = description;
       return contract.getAuthor();
-    }).then((author) => {
+    })
+    .then((author) => {
       data.personalInfo.name = author[0];
       data.personalInfo.info = author[1];
       return contract.getSkillsCount();
-    }).then((count) => {
+    })
+    .then((count) => {
+      data.skills = [];
+      let p = Promise.resolve();
       for(let i=0; i<count; ++i) {
-       this.getSkillForContract(contract, i)
-       .then((skill) => {
-          data.skills.add({name: skill[0], level: skill[1]});
-       })
+        p = p.then(() => contract.getSkill(i))
+          .then(skill => data.skills.push({name: skill[0], level: ++skill[1]}))
       }
-      return contract.getProjectsCount();
-    }).then((count) => {
+      return p.then(() => contract.getProjectsCount());
+    })
+    .then((count) => {
+      data.projects = [];
+      let p = Promise.resolve();
       for(let i=0; i<count; ++i) {
-        this.getProjectForContract(contract, i)
-        .then((project) => {
-           data.project.add({name: project[0], description: project[1]});
-        })
-       }
-    }).then(() => {
+        p = p.then(() => contract.getProject(i))
+        .then(project => data.projects.push({name: project[0], description: project[1]}))
+      }
+      return p;
+    })
+    .then(() => {
       this.setState({cvdata : data});
     });
   }
 
-  getSkillForContract(contract, num) {
-    return new Promise(() => {
-      return contract.getSkill(num);
-    })
-  }
-
-  getProjectForContract(contract, num) {
-    return new Promise(() => {
-      return contract.getProject(num);
-    })
-  }
+  // TODO: Add watch and test with watch
+  // TODO: pozmieniaj nazwy w personal info
+  // TODO: zrob ten sam front w prostszej formie dla truffle-cv
 
   render() {
     let data = this.state.cvdata;
@@ -122,8 +116,7 @@ export default class App extends React.Component {
           <div className="col-md-4 left-column">
             <div className="wrapper">
               <Title title={data.title} />
-              <PersonalInfo name="E-mail"
-                info={data.personalInfo.info}/>
+              <PersonalInfo name="E-mail"info={data.personalInfo.info}/>
               <AddressUrl name="LinkedIn" url={data.addressUrl} />
             </div>
             <div className="skills-heading">Skills</div>

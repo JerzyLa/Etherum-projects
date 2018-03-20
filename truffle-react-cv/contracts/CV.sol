@@ -42,6 +42,7 @@ contract MyCV is CVExtender, Mortal {
       m_addressUrl = "https://github.com/JerzyLa";
       m_projects.push(Project("SDARS", "Satellite radio application for automotive companies"));
       m_skills.push(Skill("English", SkillLevel.VERY_GOOD));
+      m_skills.push(Skill("C++", SkillLevel.EXPERT));
    }
 
    function getAddress() public view returns(string) {
