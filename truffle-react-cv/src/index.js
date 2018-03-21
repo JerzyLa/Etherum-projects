@@ -10,7 +10,7 @@ let cvdata = {
   description:
     "I am software developer with over 4 years of professional experience, passionate about blockchain development.",
   addressUrl: "https://www.linkedin.com/in/jerzylasyk",
-  personalInfo: { name: "E-mail", info: "jerzylasyk@gmail.com" },
+  personalInfo: { name: "E-mail", email: "jerzylasyk@gmail.com" },
   projects: [
     {
       name: "SDARS",

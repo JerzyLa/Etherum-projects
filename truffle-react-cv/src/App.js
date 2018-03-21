@@ -31,6 +31,7 @@ export default class App extends React.Component {
       this.myCvContract.setProvider(this.web3.currentProvider);
       this.getAccounts();
       this.updateCvForContract();
+      this.listenContractEvents();
     })
     .catch(() => {
       console.log('Error finding web3.')
@@ -55,8 +56,32 @@ export default class App extends React.Component {
     })
   }
 
-  updateCvForContract()
-  {
+  updateAddress(address) {
+    let data = this.state.cvdata;
+    data.address = address;
+    this.setState({cvdata : data});
+  }
+
+  updateDescription(description) {
+    let data = this.state.cvdata;
+    data.description = description;
+    this.setState({cvdata : data});
+  }
+
+  updateTitle(title) {
+    let data = this.state.cvdata;
+    data.title = title;
+    this.setState({cvdata : data});
+  }
+
+  updateAuthor(name, email) {
+    let data = this.state.cvdata;
+    data.personalInfo.name = name;
+    data.personalInfo.email = email;
+    this.setState({cvdata : data});
+  }
+
+  updateCvForContract() {
     let contract;
     let data = this.state.cvdata;
     this.myCvContract.deployed().then((instance) => {
@@ -77,7 +102,7 @@ export default class App extends React.Component {
     })
     .then((author) => {
       data.personalInfo.name = author[0];
-      data.personalInfo.info = author[1];
+      data.personalInfo.email = author[1];
       return contract.getSkillsCount();
     })
     .then((count) => {
@@ -103,9 +128,39 @@ export default class App extends React.Component {
     });
   }
 
-  // TODO: Add watch and test with watch
   // TODO: pozmieniaj nazwy w personal info
+  // TODO: dodaj update eventu skills, projects i przetestuj
+  // TODO: przetestuj jak to będzie działać na żywym blockchainie
   // TODO: zrob ten sam front w prostszej formie dla truffle-cv
+
+  listenContractEvents() {
+    this.myCvContract.deployed().then((instance) => {
+      instance.AddressChanged({}, {}).watch((error, event) => {
+        console.log("AddressChanged: ", JSON.stringify(event));
+        this.updateAddress(event.args.newAddress);
+      });
+      instance.DescriptionChanged({}, {}).watch((error, event) => {
+        console.log("DescriptionChanged: ", JSON.stringify(event));
+        this.updateDescription(event.args.newDescription);
+      });
+      instance.TitleChanged({}, {}).watch((error, event) => {
+        console.log("TitleChanged: ", JSON.stringify(event));
+        this.updateTitle(event.args.newTitle);
+      });
+      instance.AuthorChanged({}, {}).watch((error, event) => {
+        console.log("AuthorChanged: ", JSON.stringify(event));
+        this.updateAuthor(event.args.newName, event.args.newEmail);
+      });
+      instance.SkillsChanged({}, {}).watch((error, event) => {
+        console.log("SkillsChanged");
+        this.updateCvForContract();
+      });
+      instance.ProjectsChanged({}, {}).watch((error, event) => {
+        console.log("ProjectsChanged");
+        this.updateCvForContract();
+      })
+    })
+  }
 
   render() {
     let data = this.state.cvdata;
@@ -116,7 +171,7 @@ export default class App extends React.Component {
           <div className="col-md-4 left-column">
             <div className="wrapper">
               <Title title={data.title} />
-              <PersonalInfo name="E-mail"info={data.personalInfo.info}/>
+              <PersonalInfo name="E-mail"info={data.personalInfo.email}/>
               <AddressUrl name="LinkedIn" url={data.addressUrl} />
             </div>
             <div className="skills-heading">Skills</div>
@@ -134,3 +189,15 @@ export default class App extends React.Component {
     );
   }
 }
+
+// USED ONLY FOR TESTING PURPOSES
+//
+// setTimeout(() => {
+//   console.log("Timeout");
+//   this.myCvContract.deployed().then((instance) => {
+//     return instance.changeAddress("www.test.pl", {from: this.accounts[0]});
+//   }).then(() => {
+//     console.log("address updated");
+//   });
+// }, 2000);
+//
