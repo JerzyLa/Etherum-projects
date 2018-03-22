@@ -30,8 +30,8 @@ export default class App extends React.Component {
       this.web3 = results.web3;
       this.myCvContract.setProvider(this.web3.currentProvider);
       this.getAccounts();
-      this.updateCvForContract();
-      this.listenContractEvents();
+      this.updateCvForContract()
+      .then(() => this.listenContractEvents());
     })
     .catch(() => {
       console.log('Error finding web3.')
@@ -81,10 +81,44 @@ export default class App extends React.Component {
     this.setState({cvdata : data});
   }
 
+  updateSkills(contract) {
+    let data = this.state.cvdata;
+    data.skills = [];
+
+    contract.getSkillsCount()
+    .then((count) => {
+      let p = Promise.resolve();
+      for(let i=0; i<count; ++i) {
+        p = p
+            .then(() => contract.getSkill(i))
+            .then(skill => data.skills.push({name: skill[0], level: ++skill[1]}))
+      }
+      return p;
+    })
+    .then(() => this.setState({cvdata : data}));
+  }
+
+  updateProjects(contract) {
+    let data = this.state.cvdata;
+    data.projects = [];
+
+    contract.getProjectsCount()
+    .then((count) => {
+      let p = Promise.resolve();
+      for(let i=0; i<count; ++i) {
+        p = p
+            .then(() =>  contract.getProject(i))
+            .then(project => data.projects.push({name: project[0], description: project[1]}))
+      }
+      return p;
+    })
+    .then(() => this.setState({cvdata : data}))
+  }
+
   updateCvForContract() {
     let contract;
     let data = this.state.cvdata;
-    this.myCvContract.deployed().then((instance) => {
+    return this.myCvContract.deployed().then((instance) => {
       contract = instance;
       return contract.getAddress({from: this.accounts[0]});
     })
@@ -109,7 +143,8 @@ export default class App extends React.Component {
       data.skills = [];
       let p = Promise.resolve();
       for(let i=0; i<count; ++i) {
-        p = p.then(() => contract.getSkill(i))
+        p = p
+          .then(() => contract.getSkill(i))
           .then(skill => data.skills.push({name: skill[0], level: ++skill[1]}))
       }
       return p.then(() => contract.getProjectsCount());
@@ -128,8 +163,6 @@ export default class App extends React.Component {
     });
   }
 
-  // TODO: pozmieniaj nazwy w personal info
-  // TODO: dodaj update eventu skills, projects i przetestuj
   // TODO: przetestuj jak to będzie działać na żywym blockchainie
   // TODO: zrob ten sam front w prostszej formie dla truffle-cv
 
@@ -152,12 +185,12 @@ export default class App extends React.Component {
         this.updateAuthor(event.args.newName, event.args.newEmail);
       });
       instance.SkillsChanged({}, {}).watch((error, event) => {
-        console.log("SkillsChanged");
-        this.updateCvForContract();
+        console.log("SkillsChanged: ", JSON.stringify(event));
+        this.updateSkills(instance);
       });
       instance.ProjectsChanged({}, {}).watch((error, event) => {
-        console.log("ProjectsChanged");
-        this.updateCvForContract();
+        console.log("ProjectsChanged: ", JSON.stringify(event));
+        this.updateProjects(instance);
       })
     })
   }
@@ -172,7 +205,7 @@ export default class App extends React.Component {
             <div className="wrapper">
               <Title title={data.title} />
               <PersonalInfo name="E-mail"info={data.personalInfo.email}/>
-              <AddressUrl name="LinkedIn" url={data.addressUrl} />
+              <AddressUrl name="Address" url={data.addressUrl} />
             </div>
             <div className="skills-heading">Skills</div>
             <SkillsList skills={data.skills}/>
