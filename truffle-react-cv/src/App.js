@@ -56,9 +56,9 @@ export default class App extends React.Component {
     })
   }
 
-  updateAddress(address) {
+  updateAddressUrl(addressUrl) {
     let data = this.state.cvdata;
-    data.address = address;
+    data.addressUrl = addressUrl;
     this.setState({cvdata : data});
   }
 
@@ -163,14 +163,14 @@ export default class App extends React.Component {
     });
   }
 
-  // TODO: przetestuj jak to będzie działać na żywym blockchainie
+  // TODO: Takie same nazwy w blockchain i w front endzie zrobic
   // TODO: zrob ten sam front w prostszej formie dla truffle-cv
 
   listenContractEvents() {
     this.myCvContract.deployed().then((instance) => {
       instance.AddressChanged({}, {}).watch((error, event) => {
         console.log("AddressChanged: ", JSON.stringify(event));
-        this.updateAddress(event.args.newAddress);
+        this.updateAddressUrl(event.args.newAddress);
       });
       instance.DescriptionChanged({}, {}).watch((error, event) => {
         console.log("DescriptionChanged: ", JSON.stringify(event));
