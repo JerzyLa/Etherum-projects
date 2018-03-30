@@ -6,29 +6,29 @@ import ReactDOM from "react-dom";
 import App from "./App";
 
 let cvdata = {
-  title: "Jerzy Lasyk",
+  title: "Jerzy Lasyk CV",
   description:
-    "I am software developer with over 4 years of professional experience, passionate about blockchain development.",
-  addressUrl: "https://www.linkedin.com/in/jerzylasyk",
-  personalInfo: { name: "E-mail", email: "jerzylasyk@gmail.com" },
+    "If you want to see complete CV run metamask or mist and refresh website",
+  addressUrl: "https://github.com/JerzyLa",
+  personalInfo: { name: "Jerzy Lasyk", email: "xyz@gmail.com" },
   projects: [
     {
-      name: "SDARS",
+      name: "PROJECT 1",
       description:
-        "Satellite radio application for automotive companies like Volvo, Volkswagen."
+        "Very interesting software project."
     },
     {
-      name: "BLOCKCHAIN CV",
+      name: "PROJECT 2",
       description:
-        "Truffle project, which contains smart contracts and web frontend. Smart contract is used as database."
+        "Another very interesting software project."
     },
     {
-      name: "BITCOIN BLOCKCHAIN PARSER",
+      name: "PROJECT 3",
       description:
-        "Application for parsing bitcoin blockchain and store all transactions, addresses, blocks, longest chain etc. in MySQL database."
+        "And another one very interesting software project."
     }
   ],
-  skills: [{ name: "English", level: 4 }, { name: "C++", level: 5 }]
+  skills: [{ name: "Skill 1", level: 4 }, { name: "Skill 2", level: 5 }]
 };
 
 ReactDOM.render(<App cvdata={cvdata} />, document.getElementById("app"));

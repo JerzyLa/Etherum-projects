@@ -43,13 +43,19 @@ contract MyCV is CVExtender, Mortal {
     Skill[] m_skills;
 
     function MyCV() public {
-        m_title = "Jerzy Lasyk CV";
-        m_description = "I am software developer with over 4 years of professional experience passionate about blockchain development.";
-        m_personalInfo = PersonalInfo("Jerzy Lasyk", "jerzylasyk@gmail.com");
-        m_addressUrl = "https://github.com/JerzyLa";
-        m_projects.push(Project("SDARS", "Satellite radio application for automotive companies like Volvo, Volkswagen"));
+        m_title = "Jerzy Lasyk";
+        m_description = "I am software developer with over 4 years of professional experience, passionate about blockchain development.";
+        m_personalInfo = PersonalInfo("Jerzy Lasyk", "jerzy.lasyk@gmail.com");
+        m_addressUrl = "https://www.linkedin.com/in/jerzylasyk";
+        m_projects.push(Project("SDARS", "Satellite radio application for modern automotive infotainment systems. Created several versions of this application on platforms like LINUX, QNX, Android."));
+        m_projects.push(Project("BLOCKCHAIN CV", "Truffle project, which contains smart contracts and web frontend. Smart contract is used as database."));
+        m_projects.push(Project("BITCOIN BLOCKCHAIN PARSER", "Application for parsing bitcoin blockchain and storing all transactions, addresses, blocks, longest chain etc. in MySQL database. Created using C#, C++."));
         m_skills.push(Skill("English", SkillLevel.VERY_GOOD));
+        m_skills.push(Skill("Blockchain", SkillLevel.EXPERT));
         m_skills.push(Skill("C++", SkillLevel.EXPERT));
+        m_skills.push(Skill("Truffle", SkillLevel.VERY_GOOD));
+        m_skills.push(Skill("React", SkillLevel.VERY_GOOD));
+        m_skills.push(Skill("Multithread programming, synchronization and data sharing", SkillLevel.EXPERT));
     }
 
     function getAddress() public view returns(string) {
