@@ -53,6 +53,7 @@ contract MyCV is CVExtender, Mortal {
         m_skills.push(Skill("English", SkillLevel.VERY_GOOD));
         m_skills.push(Skill("Blockchain", SkillLevel.EXPERT));
         m_skills.push(Skill("C++", SkillLevel.EXPERT));
+        m_skills.push(Skill("Solidity", SkillLevel.VERY_GOOD));
         m_skills.push(Skill("Truffle", SkillLevel.VERY_GOOD));
         m_skills.push(Skill("React", SkillLevel.VERY_GOOD));
         m_skills.push(Skill("Multithread programming, synchronization and data sharing", SkillLevel.EXPERT));
